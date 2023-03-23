@@ -33,7 +33,7 @@ const Todo = () => {
     setTitle('');
     setDescription('');
   };
-
+// to use patch
   const handleUpdate = (id, { title, description }) => {
     setEditingTodo({ id, title, description });
     setShowPopup(true);
