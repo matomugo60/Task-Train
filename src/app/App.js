@@ -1,5 +1,3 @@
-// import Login from './components/Login';
-// import SignUp from './components/SignUp';
 import Navbar from './components/Navbar';
 import './App.css';
 
@@ -14,8 +12,7 @@ function App() {
     <div className="App">
       <BrowserRouter>
       <Navbar/>
-      {/* <SignUp/> */}
-
+     
       <Routes>
       <Route path="/" element={< SignUp />} /> 
       <Route path="/login" element={< Login />} /> 
