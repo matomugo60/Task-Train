@@ -7,6 +7,7 @@ const Todo = () => {
   const [editingTodo, setEditingTodo] = useState(null);
   const [editTitle, setEditTitle] = useState('');
   const [editDescription, setEditDescription] = useState('');
+  // using popup form to update data
   const [showPopup, setShowPopup] = useState(false);
 
   useEffect(() => {
