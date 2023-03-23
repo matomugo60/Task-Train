@@ -11,6 +11,7 @@ const SignUp = ({ setLoggedIn }) => {
   const handleSignUp = async (e) => {
     e.preventDefault();
     try {
+      // Signup logic
       const response = await axios.post("/api/signup", {
         email,
         password,
