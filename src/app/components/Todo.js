@@ -25,7 +25,7 @@ const Todo = () => {
       setEditDescription(editingTodo.description);
     }
   }, [editingTodo]);
-
+// to use get
   const handleSubmit = async (e) => {
     e.preventDefault();
     const newTodo = { title, description };
