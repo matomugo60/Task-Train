@@ -8,7 +8,7 @@ function Login() {
 
   const handleLogin = async () => {
     try {
-      // Login logic here. 
+      // Login logic done  here. 
 
       // Redirect to /todo on successful login
       window.location.href = '/todo';
