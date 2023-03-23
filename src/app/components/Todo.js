@@ -47,7 +47,7 @@ const Todo = () => {
     setEditingTodo(null);
     setShowPopup(false);
   };
-
+// to use destroy
   const handleDelete = (id) => {
     const filteredTodos = todos.filter((todo) => todo.id !== id);
     setTodos(filteredTodos);
