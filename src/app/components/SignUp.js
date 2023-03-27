@@ -11,15 +11,15 @@ const SignUp = ({ setLoggedIn }) => {
   const handleSignUp = async (e) => {
     e.preventDefault();
     try {
-      // Signup logic
       const response = await axios.post("/api/signup", {
         email,
         password,
-        username
+        username,
       });
       localStorage.setItem("token", response.data.token);
       setLoggedIn(true);
-      // redirect to home page
+      // Redirect to home page
+      window.location.href = "/todo";
     } catch (err) {
       setError(err.response.data.error);
     }
@@ -64,9 +64,7 @@ const SignUp = ({ setLoggedIn }) => {
         </div>
         {error && <div className="alert alert-danger">{error}</div>}
         <button type="submit" className="btn btn-primary">
-          <Link to="/todo" style={{ color: "white" }}>
-            Sign Up
-          </Link>
+          Sign Up
         </button>
       </form>
       <div className="mt-3">
