@@ -9,7 +9,7 @@ const Todo = () => {
   const [editTitle, setEditTitle] = useState('');
   const [editDescription, setEditDescription] = useState('');
   const [showPopup, setShowPopup] = useState(false);
-
+// Get todos
   useEffect(() => {
     const fetchTodos = async () => {
       try {
@@ -21,7 +21,7 @@ const Todo = () => {
     };
     fetchTodos();
   }, []);
-
+// Add todo
   const handleAddTodo = async (e) => {
     e.preventDefault();
     try {
@@ -33,7 +33,7 @@ const Todo = () => {
       console.error(error);
     }
   };
-
+// Update todo
   const handleUpdateTodo = async (id) => {
     try {
       const updatedTodo = { title: editTitle, description: editDescription };
@@ -46,7 +46,7 @@ const Todo = () => {
       console.error(error);
     }
   };
-
+// Delete todo
   const handleDeleteTodo = async (id) => {
     try {
       await axios.delete(`https://td-api-3e6u.onrender.com//todos/${id}`);
@@ -56,7 +56,7 @@ const Todo = () => {
       console.error(error);
     }
   };
-
+// Edit todo
   const handleEditTodo = (todo) => {
     setEditingTodo(todo);
     setEditTitle(todo.title);
@@ -112,69 +112,69 @@ const Todo = () => {
                 <button
                   type="button"
                   className="btn btn-primary"
-onClick={() => handleEditTodo(todo)}
->
-Edit
-</button>
-<button
-type="button"
-className="btn btn-danger"
-onClick={() => handleDeleteTodo(todo.id)}
->
-Delete
-</button>
-</td>
-</tr>
-))}
-</tbody>
-</table>
-{editingTodo && (
-<div className="popup">
-<div className="popup-inner">
-<h2>Edit Todo</h2>
-<form>
-<div className="form-group">
-<label htmlFor="editTitle">Title</label>
-<input
-type="text"
-className="form-control"
-id="editTitle"
-placeholder="Enter title"
-value={editTitle}
-onChange={(e) => setEditTitle(e.target.value)}
-/>
-</div>
-<div className="form-group">
-<label htmlFor="editDescription">Description</label>
-<input
-type="text"
-className="form-control"
-id="editDescription"
-placeholder="Enter description"
-value={editDescription}
-onChange={(e) => setEditDescription(e.target.value)}
-/>
-</div>
-<button
-type="button"
-className="btn btn-primary"
-onClick={() => handleUpdateTodo(editingTodo.id)}
->
-Update Todo
-</button>
-<button
-type="button"
-className="btn btn-danger"
-onClick={() => setShowPopup(false)}
->
-Cancel
-</button>
-</form>
-</div>
-</div>
-)}
-</div>
-);
-};
+        onClick={() => handleEditTodo(todo)}
+        >
+        Edit
+        </button>
+        <button
+        type="button"
+        className="btn btn-danger"
+        onClick={() => handleDeleteTodo(todo.id)}
+        >
+        Delete
+        </button>
+        </td>
+        </tr>
+        ))}
+        </tbody>
+        </table>
+        {editingTodo && (
+        <div className="popup">
+        <div className="popup-inner">
+        <h2>Edit Todo</h2>
+        <form>
+        <div className="form-group">
+        <label htmlFor="editTitle">Title</label>
+        <input
+        type="text"
+        className="form-control"
+        id="editTitle"
+        placeholder="Enter title"
+        value={editTitle}
+        onChange={(e) => setEditTitle(e.target.value)}
+        />
+        </div>
+        <div className="form-group">
+        <label htmlFor="editDescription">Description</label>
+        <input
+        type="text"
+        className="form-control"
+        id="editDescription"
+        placeholder="Enter description"
+        value={editDescription}
+        onChange={(e) => setEditDescription(e.target.value)}
+        />
+        </div>
+        <button
+        type="button"
+        className="btn btn-primary"
+        onClick={() => handleUpdateTodo(editingTodo.id)}
+        >
+        Update Todo
+        </button>
+        <button
+        type="button"
+        className="btn btn-danger"
+        onClick={() => setShowPopup(false)}
+        >
+        Cancel
+        </button>
+        </form>
+        </div>
+        </div>
+        )}
+        </div>
+        );
+        };
 
 export default Todo;
