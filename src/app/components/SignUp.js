@@ -11,7 +11,7 @@ const SignUp = ({ setLoggedIn }) => {
   const handleSignUp = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("/api/signup", {
+      const response = await axios.post("https://td-api-3e6u.onrender.com/users", {
         email,
         password,
         username,
