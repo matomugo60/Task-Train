@@ -13,7 +13,7 @@ const Todo = () => {
   useEffect(() => {
     const fetchTodos = async () => {
       try {
-        const response = await axios.get('/api/todos');
+        const response = await axios.get('https://td-api-3e6u.onrender.com/todos');
         setTodos(response.data);
       } catch (error) {
         console.error(error);
@@ -25,7 +25,7 @@ const Todo = () => {
   const handleAddTodo = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('/api/todos', { title, description });
+      const response = await axios.post('https://td-api-3e6u.onrender.com/todos', { title, description });
       setTodos([...todos, response.data]);
       setTitle('');
       setDescription('');
@@ -37,7 +37,7 @@ const Todo = () => {
   const handleUpdateTodo = async (id) => {
     try {
       const updatedTodo = { title: editTitle, description: editDescription };
-      const response = await axios.patch(`/api/todos/${id}`, updatedTodo);
+      const response = await axios.patch(`https://td-api-3e6u.onrender.com/todos/${id}`, updatedTodo);
       const updatedTodos = todos.map((todo) => (todo.id === response.data.id ? response.data : todo));
       setTodos(updatedTodos);
       setEditingTodo(null);
@@ -49,7 +49,7 @@ const Todo = () => {
 
   const handleDeleteTodo = async (id) => {
     try {
-      await axios.delete(`/api/todos/${id}`);
+      await axios.delete(`https://td-api-3e6u.onrender.com//todos/${id}`);
       const filteredTodos = todos.filter((todo) => todo.id !== id);
       setTodos(filteredTodos);
     } catch (error) {
