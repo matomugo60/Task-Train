@@ -5,7 +5,7 @@ import Todo from './components/Todo';
 import Navbar from './components/Navbar';
 import './App.css';
 
-
+// App
 function App() {
   return (
     <div className="App">
