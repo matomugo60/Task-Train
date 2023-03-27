@@ -56,7 +56,7 @@ const Todo = () => {
       console.error(error);
     }
   };
-// Edit todo
+// Edit todo using a popup
   const handleEditTodo = (todo) => {
     setEditingTodo(todo);
     setEditTitle(todo.title);
