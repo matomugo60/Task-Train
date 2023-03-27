@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
 const Todo = () => {
   const [todos, setTodos] = useState([]);
@@ -7,57 +8,66 @@ const Todo = () => {
   const [editingTodo, setEditingTodo] = useState(null);
   const [editTitle, setEditTitle] = useState('');
   const [editDescription, setEditDescription] = useState('');
-  // using popup form to update data
   const [showPopup, setShowPopup] = useState(false);
 
   useEffect(() => {
-    const fetchData = async () => {
-      // CRUD Functionality
-      const result = [];
-
-      setTodos(result);
+    const fetchTodos = async () => {
+      try {
+        const response = await axios.get('/api/todos');
+        setTodos(response.data);
+      } catch (error) {
+        console.error(error);
+      }
     };
-    fetchData();
+    fetchTodos();
   }, []);
 
-  useEffect(() => {
-    if (editingTodo) {
-      setEditTitle(editingTodo.title);
-      setEditDescription(editingTodo.description);
-    }
-  }, [editingTodo]);
-// to use get
-  const handleSubmit = async (e) => {
+  const handleAddTodo = async (e) => {
     e.preventDefault();
-    const newTodo = { title, description };
-    setTodos([...todos, newTodo]);
-    setTitle('');
-    setDescription('');
+    try {
+      const response = await axios.post('/api/todos', { title, description });
+      setTodos([...todos, response.data]);
+      setTitle('');
+      setDescription('');
+    } catch (error) {
+      console.error(error);
+    }
   };
-// to use patch
-  const handleUpdate = (id, { title, description }) => {
-    setEditingTodo({ id, title, description });
+
+  const handleUpdateTodo = async (id) => {
+    try {
+      const updatedTodo = { title: editTitle, description: editDescription };
+      const response = await axios.patch(`/api/todos/${id}`, updatedTodo);
+      const updatedTodos = todos.map((todo) => (todo.id === response.data.id ? response.data : todo));
+      setTodos(updatedTodos);
+      setEditingTodo(null);
+      setShowPopup(false);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleDeleteTodo = async (id) => {
+    try {
+      await axios.delete(`/api/todos/${id}`);
+      const filteredTodos = todos.filter((todo) => todo.id !== id);
+      setTodos(filteredTodos);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleEditTodo = (todo) => {
+    setEditingTodo(todo);
+    setEditTitle(todo.title);
+    setEditDescription(todo.description);
     setShowPopup(true);
   };
 
-  const handleSave = () => {
-    const updatedTodos = todos.map((todo) =>
-      todo.id === editingTodo.id ? { ...todo, title: editTitle, description: editDescription } : todo
-    );
-    setTodos(updatedTodos);
-    setEditingTodo(null);
-    setShowPopup(false);
-  };
-// to use destroy
-  const handleDelete = (id) => {
-    const filteredTodos = todos.filter((todo) => todo.id !== id);
-    setTodos(filteredTodos);
-  };
-  
   return (
     <div className="container">
       <h1>Todo App</h1>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleAddTodo}>
         <div className="form-group">
           <label htmlFor="title">Title</label>
           <input
@@ -101,61 +111,70 @@ const Todo = () => {
               <td>
                 <button
                   type="button"
-                  className="btn btn-sm btn-outline-primary mr-2"
-                  onClick={() =>
-                    handleUpdate(todo.id, {
-                      title: todo.title,
-                      description:todo.description,
-                    })
-                    }
-                    >
-                    Edit
-                    </button>
-                    <button type="button" className="btn btn-sm btn-outline-danger" onClick={() => handleDelete(todo.id)}>
-                    Delete
-                    </button>
-                    </td>
-                    </tr>
-                    ))}
-                    </tbody>
-                    </table>
-                    {showPopup && (
-                    <div className="popup">
-                    <div className="popup-inner">
-                    <h2>Edit Todo</h2>
-                    <form onSubmit={handleSave}>
-                    <div className="form-group">
-                    <label htmlFor="editTitle">Title</label>
-                    <input
-                    type="text"
-                    className="form-control"
-                    id="editTitle"
-                    value={editTitle}
-                    onChange={(e) => setEditTitle(e.target.value)}
-                    />
-                    </div>
-                    <div className="form-group">
-                    <label htmlFor="editDescription">Description</label>
-                    <input
-                    type="text"
-                    className="form-control"
-                    id="editDescription"
-                    value={editDescription}
-                    onChange={(e) => setEditDescription(e.target.value)}
-                    />
-                    </div>
-                    <button type="submit" className="btn btn-primary">
-                    Save
-                    </button>
-                    </form>
-                    <button className="close-btn" onClick={() => setShowPopup(false)}>
-                    X
-                    </button>
-                    </div>
-                    </div>
-                    )}
-                    </div>
-                    );
-                    };
-                    
-                    export default Todo;
+                  className="btn btn-primary"
+onClick={() => handleEditTodo(todo)}
+>
+Edit
+</button>
+<button
+type="button"
+className="btn btn-danger"
+onClick={() => handleDeleteTodo(todo.id)}
+>
+Delete
+</button>
+</td>
+</tr>
+))}
+</tbody>
+</table>
+{editingTodo && (
+<div className="popup">
+<div className="popup-inner">
+<h2>Edit Todo</h2>
+<form>
+<div className="form-group">
+<label htmlFor="editTitle">Title</label>
+<input
+type="text"
+className="form-control"
+id="editTitle"
+placeholder="Enter title"
+value={editTitle}
+onChange={(e) => setEditTitle(e.target.value)}
+/>
+</div>
+<div className="form-group">
+<label htmlFor="editDescription">Description</label>
+<input
+type="text"
+className="form-control"
+id="editDescription"
+placeholder="Enter description"
+value={editDescription}
+onChange={(e) => setEditDescription(e.target.value)}
+/>
+</div>
+<button
+type="button"
+className="btn btn-primary"
+onClick={() => handleUpdateTodo(editingTodo.id)}
+>
+Update Todo
+</button>
+<button
+type="button"
+className="btn btn-danger"
+onClick={() => setShowPopup(false)}
+>
+Cancel
+</button>
+</form>
+</div>
+</div>
+)}
+</div>
+);
+};
+
+export default Todo;
